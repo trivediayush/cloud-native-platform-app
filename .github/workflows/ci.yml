@@ -39,7 +39,9 @@ jobs:
          run: podman build -t cloud-native-platform-app:ci .
 
        - name: Install Trivy
-         uses: aquasecurity/trivy-action@v0.2.4
+         uses: aquasecurity/trivy-action@master
+         with:
+            version: 'latest'
 
-       - name: Scan container image
+       - name: Scan image
          run: trivy image --severity HIGH,CRITICAL --exit-code 1 cloud-native-platform-app:ci 

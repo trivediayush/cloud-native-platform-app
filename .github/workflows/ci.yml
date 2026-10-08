@@ -27,3 +27,19 @@ jobs:
 
       - name: Run application import test
         run: python -c "from app.app import app; print('Application import successful')"
+    
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+
+    steps:
+       - name: Checkout Repository
+         uses: actions/checkout@v4
+       - name: Build container image
+         run: podman build -t cloud-native-platform-app:ci .
+
+       - name: Install Trivy
+         uses: aquasecurity/trivy-action@v0.2.4
+
+       - name: Scan container image
+         run: trivy image --severity HIGH,CRITICAL --exit-code 1 cloud-native-platform-app:ci 

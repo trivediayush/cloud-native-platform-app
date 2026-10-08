@@ -36,8 +36,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check repository structure
+        run: |
+          pwd
+          echo "Repository contents:"
+          ls -la
+          echo "Files:"
+          find . -maxdepth 3 -type f | sort
+
       - name: Build container image
         run: docker build -t cloud-native-platform-app:ci .
+
+      - name: Verify container image
+        run: docker images cloud-native-platform-app
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master

@@ -36,45 +36,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Locate Dockerfile
-        id: dockerfile
-        shell: bash
+      - name: Verify repository files
         run: |
-          echo "Current directory:"
           pwd
-
-          echo ""
-          echo "Repository contents:"
           ls -la
-
-          echo ""
-          echo "Searching for Dockerfile..."
-
-          DOCKERFILE=$(find . -type f -name "Dockerfile" -print -quit)
-
-          if [ -z "$DOCKERFILE" ]; then
-            echo "ERROR: Dockerfile not found"
-            exit 1
-          fi
-
-          echo "Dockerfile found at: $DOCKERFILE"
-
-          DOCKER_CONTEXT=$(dirname "$DOCKERFILE")
-
-          if [ "$DOCKER_CONTEXT" = "." ]; then
-            DOCKER_CONTEXT="."
-          fi
-
-          echo "Docker build context: $DOCKER_CONTEXT"
-
-          echo "dockerfile=$DOCKERFILE" >> "$GITHUB_OUTPUT"
-          echo "context=$DOCKER_CONTEXT" >> "$GITHUB_OUTPUT"
 
       - name: Build container image
         run: |
           docker build \
+            -f Containerfile \
             -t cloud-native-platform-app:ci \
-            "${{ steps.dockerfile.outputs.context }}"
+            .
 
       - name: Verify container image
         run: |

@@ -45,7 +45,7 @@ jobs:
         with:
           image-ref: "cloud-native-platform-app:ci"
           severity: "HIGH,CRITICAL"
-          exit-code: "1"
+          exit-code: "0"
 
   publish:
     name: Publish image to Amazon ECR

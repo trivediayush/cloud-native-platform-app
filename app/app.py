@@ -7,7 +7,7 @@ def home():
     return{
         "application": "cloud-native-platform-app",
         "status": "running",
-        "version": "1.0.0"
+        "version": "1.0.1"
     }
 
 @app.get("/health")
